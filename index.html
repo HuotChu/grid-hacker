@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Grid Hacker: Conway's Game of Life, Hacked.</title>
+    <title>Grid Hacker</title>
     
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1, IE=edge" />
@@ -22,23 +22,22 @@
     <p>Grid &nbsp; Hacker</p>
 </section>-->
 
-<div id="game"></div>
+<div id="gridGame"></div>
 
-<p class="play-button">Play</p>
-<p class="stop-button">Stop</p>
+<!--<p class="play-button">Play</p>-->
+<!--<p class="stop-button">Stop</p>-->
 
+<script src="lib/square.js"></script>
 <script src="lib/verge.min.js"></script>
 <script src="lib/phaser.min.js"></script>
 
-<!--<script src="app/Boot.js"></script>-->
-<script src="app/Preloader.js"></script>
-<script src="app/Grid.js"></script>
-<!--<script src="app/Main.js"></script>-->
-<script src="app/Game.js"></script>
+<script src="game/main.js"></script>
+<script src="game/grid.js"></script>
+<script src="game/tile.js"></script>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
     (function() {
-        var game = new Phaser.Game(1600, 800, Phaser.CANVAS, 'game');
+        var game = square.game = new Phaser.Game(1600, 800, Phaser.CANVAS, 'game');
 
         //game.state.add('Boot', gridHacker.Boot);
         game.state.add('Preloader', gridHacker.Preloader);
@@ -58,7 +57,7 @@
             gridHacker.Game.prototype.model.state = 0;
         }, false);
     }());
-</script>
+</script>-->
 
 </body>
 </html>
