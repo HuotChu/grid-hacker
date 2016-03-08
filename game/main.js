@@ -76,5 +76,4 @@ square.g.game = (function () {
     return game;
 }());
 
-//game.state.add(states.game, gameState);
 square.g.game.state.start(square.g.gameStates.game);
