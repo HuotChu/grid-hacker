@@ -1,13 +1,11 @@
 square.CONSTANTS = {};
 
 square.g = {
-    defaults: {
+    config: {
         screenWidth: verge.viewportW(),
         screenHeight: verge.viewportH(),
-        tileWidth: 32,
-        tileHeight: 32,
-        gridWidth: 10,
-        gridHeight: 10
+        columns: 10,
+        rows: 10
     },
 
     gameStates: {
@@ -26,39 +24,45 @@ square.g = {
         tiles: {
             resource: 'assets/images/grid-tiles.png',
             id: 'tiles',
-            frames: 130
+            tileWidth: 32,
+            tileHeight: 32,
+            frames: 140
         }
     },
     
     preload: function () {
-        var props = this.defaults,
-            sprites = this.sprites;
+        var tiles = this.sprites.tiles;
 
-        this.game.load.spritesheet(sprites.tiles.id, sprites.tiles.resource, props.tileWidth, props.tileHeight, sprites.tiles.frames);
+        this.game.load.spritesheet(tiles.id, tiles.resource, tiles.tileWidth, tiles.tileHeight, tiles.frames);
     }
     
 };
 
 square.g.game = (function () {
     var g = square.g,
-        props = g.defaults,
+        config = g.config,
+        rows = config.rows,
+        columns = config.columns,
+        screenH = config.screenHeight,
+        screenW = config.screenWidth,
+        tiles = g.sprites.tiles,
+        tileH = tiles.tileHeight,
+        tileW = tiles.tileWidth,
         game;
 
     g.gameState.prototype = {
         init: function () {
-            this.boardTop = (props.screenHeight - (props.tileHeight * props.gridHeight)) * 0.5;
-            this.boardLeft = (props.screenWidth - (props.tileWidth * props.gridWidth)) * 0.5;
+            this.boardTop = Math.round( (screenH - (tileH * rows)) * 0.5 );
+            this.boardLeft = Math.round( (screenW - (tileW * columns)) * 0.5 );
         },
 
         initGrid: function () {
-            this.grid = new square.Grid(props.gridWidth, props.gridHeight);
+            this.grid = new square.Grid(columns, rows);
             this.grid.moveTo(this.boardLeft, this.boardTop);
         },
 
         preload: function () {
-            var sprites = g.sprites;
-
-            this.load.spritesheet(sprites.tiles.id, sprites.tiles.resource, props.tileWidth, props.tileHeight, sprites.tiles.frames);
+            this.load.spritesheet(tiles.id, tiles.resource, tileW, tileH, tiles.frames);
         },
 
         create: function () {
@@ -70,7 +74,7 @@ square.g.game = (function () {
         }
     };
 
-    game = new Phaser.Game(props.screenWidth, props.screenHeight, Phaser.CANVAS, 'gridGame');
+    game = new Phaser.Game(screenW, screenH, Phaser.CANVAS, 'gridGame');
     game.state.add(g.gameStates.game, g.gameState);
 
     return game;

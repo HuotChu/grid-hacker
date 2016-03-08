@@ -50,14 +50,14 @@ square.CONSTANTS.tileProperties = {
 
 square.Tile = function (col, row, type, group) {
     var g = square.g,
-        props = g.defaults,
+        tiles = g.sprites.tiles,
         CONSTANTS = square.CONSTANTS,
         currentFrame = this.currentFrame = CONSTANTS.tileStates[type],
-        currentProps = this.currentProps = CONSTANTS.tileProperties[type],
-        x = col * props.tileWidth,
-        y = row * props.tileHeight;
+        x = col * tiles.tileWidth,
+        y = row * tiles.tileHeight;
 
-    this.sprite = g.game.add.sprite(x, y, square.g.sprites.tiles.id, currentFrame, group);
+    this.sprite = g.game.add.sprite(x, y, tiles.id, currentFrame, group);
+    this.currentProps = CONSTANTS.tileProperties[type];
     this.column = col;
     this.row = row;
     this.x = x;
