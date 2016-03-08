@@ -54,7 +54,14 @@ square.Tile = function (col, row, type, group) {
         CONSTANTS = square.CONSTANTS,
         currentFrame = this.currentFrame = CONSTANTS.tileStates[type],
         currentProps = this.currentProps = CONSTANTS.tileProperties[type],
-        sprite = this.sprite = g.game.add.sprite(col * props.tileWidth, row * props.tileHeight, square.g.sprites.tiles.id, currentFrame, group);
+        x = col * props.tileWidth,
+        y = row * props.tileHeight;
+
+    this.sprite = g.game.add.sprite(x, y, square.g.sprites.tiles.id, currentFrame, group);
+    this.column = col;
+    this.row = row;
+    this.x = x;
+    this.y = y;
     
     return this;
 };
