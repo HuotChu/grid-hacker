@@ -54,9 +54,28 @@ square.Tile = function (col, row, type, group) {
         CONSTANTS = square.CONSTANTS,
         currentFrame = this.currentFrame = CONSTANTS.tileStates[type],
         x = col * tiles.tileWidth,
-        y = row * tiles.tileHeight;
-
-    this.sprite = g.game.add.sprite(x, y, tiles.id, currentFrame, group);
+        y = row * tiles.tileHeight,
+        sprite = this.sprite = g.game.add.sprite(x, y, tiles.id, currentFrame, group);
+    
+    if (type == 'DEFAULT') {
+        sprite.inputEnabled = true;
+        sprite.input.useHandCursor = true;
+        sprite.events.onInputOut.add(function () {
+            var tween = g.game.add.tween(sprite);
+            
+            tween.to({x: this.x, y: this.y}, 100, Phaser.Easing.Exponential.easeOut);
+            tween.start();
+        }, this);
+        sprite.events.onInputOver.add(function () {
+            var tween = g.game.add.tween(sprite);
+            
+            tween.to({x: this.x-3, y: this.y-3}, 100, Phaser.Easing.Exponential.easeOut);
+            tween.start();
+        }, this);
+        sprite.events.onInputDown.add(function () {
+            
+        }, this);
+    }
     this.currentProps = CONSTANTS.tileProperties[type];
     this.column = col;
     this.row = row;
