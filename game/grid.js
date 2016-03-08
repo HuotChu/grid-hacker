@@ -1,4 +1,4 @@
-square.Grid = function (cols, rows) {
+square.Grid = function (cols, rows, map) {
     var grid = [],
         group = square.g.game.add.group(),
         i = 0,
@@ -9,7 +9,7 @@ square.Grid = function (cols, rows) {
         row = [];
 
         for (j = 0; j < cols; ++j) {
-            tile = new square.Tile(j, i, 'DEFAULT', group);
+            tile = new square.Tile(j, i, map[i][j], group);
             row.push(tile);
         }
 

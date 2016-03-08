@@ -51,14 +51,17 @@ square.g.game = (function () {
         game = new Phaser.Game(screenW, screenH, Phaser.CANVAS, 'gridGame');
 
     g.gameState.prototype = {
-        init: function () {
-            this.boardTop = Math.round( (screenH - (tileH * rows)) * 0.5 );
-            this.boardLeft = Math.round( (screenW - (tileW * columns)) * 0.5 );
-        },
+        initGrid: function (level) {
+            square.request('./game/levels/' + level + '.json').then(function (xhr) {
+                var data = JSON.parse(xhr.responseText),
+                    colCount = data.columns,
+                    rowCount = data.rows;
 
-        initGrid: function () {
-            this.grid = new square.Grid(columns, rows);
-            this.grid.moveTo(this.boardLeft, this.boardTop);
+                this.grid = new square.Grid(colCount, rowCount, data.map);
+                this.boardTop = Math.round( (screenH - (tileH * rowCount)) * 0.5 );
+                this.boardLeft = Math.round( (screenW - (tileW * colCount)) * 0.5 );
+                this.grid.moveTo(this.boardLeft, this.boardTop);
+            }.bind(this));
         },
 
         preload: function () {
@@ -66,7 +69,7 @@ square.g.game = (function () {
         },
 
         create: function () {
-            this.initGrid();
+            this.initGrid('01');
         },
 
         update: function () {
