@@ -48,7 +48,7 @@ square.g.game = (function () {
         tiles = g.sprites.tiles,
         tileH = tiles.tileHeight,
         tileW = tiles.tileWidth,
-        game;
+        game = new Phaser.Game(screenW, screenH, Phaser.CANVAS, 'gridGame');
 
     g.gameState.prototype = {
         init: function () {
@@ -73,8 +73,7 @@ square.g.game = (function () {
 
         }
     };
-
-    game = new Phaser.Game(screenW, screenH, Phaser.CANVAS, 'gridGame');
+    
     game.state.add(g.gameStates.game, g.gameState);
 
     return game;
