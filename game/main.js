@@ -76,7 +76,7 @@ square.g.game = (function () {
         },
 
         create: function () {
-            this.initGrid('02');
+            this.initGrid('01');
         },
 
         update: function () {
