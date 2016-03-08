@@ -52,8 +52,8 @@ square.g.game = (function () {
 
     g.gameState.prototype = {
         initGrid: function (level) {
-            square.request('./game/levels/' + level + '.json').then(function (xhr) {
-                var data = JSON.parse(xhr.responseText),
+            var build = function (xhr) {
+                var data = xhr ? JSON.parse(xhr.responseText) : {columns: columns, rows: rows, map: undefined},
                     colCount = data.columns,
                     rowCount = data.rows;
 
@@ -61,7 +61,14 @@ square.g.game = (function () {
                 this.boardTop = Math.round( (screenH - (tileH * rowCount)) * 0.5 );
                 this.boardLeft = Math.round( (screenW - (tileW * colCount)) * 0.5 );
                 this.grid.moveTo(this.boardLeft, this.boardTop);
-            }.bind(this));
+            }.bind(this);
+            
+            if (level) {
+                square.request('./game/levels/' + level + '.json').then(build);
+            } else {
+                build();
+            }
+            
         },
 
         preload: function () {
@@ -69,7 +76,7 @@ square.g.game = (function () {
         },
 
         create: function () {
-            this.initGrid('01');
+            this.initGrid('02');
         },
 
         update: function () {

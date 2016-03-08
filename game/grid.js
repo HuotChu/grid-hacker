@@ -9,7 +9,7 @@ square.Grid = function (cols, rows, map) {
         row = [];
 
         for (j = 0; j < cols; ++j) {
-            tile = new square.Tile(j, i, map[i][j], group);
+            tile = new square.Tile(j, i, map ? map[i][j] : 'DEFAULT', group);
             row.push(tile);
         }
 
