@@ -44,7 +44,7 @@ square.g.game = (function () {
     g.gameState.prototype = {
         initGrid: function (level) {
             var build = function (xhr) {
-                var data = xhr ? JSON.parse(xhr.responseText) : {columns: columns, rows: rows, map: undefined},
+                var data = xhr ? JSON.parse(xhr.responseText) : {columns: columns, rows: rows, map: undefined, backdrop: ''},
                     colCount = data.columns,
                     rowCount = data.rows,
                     grid = this.grid = new square.Grid(colCount, rowCount, data.map);
@@ -53,6 +53,15 @@ square.g.game = (function () {
                 this.boardTop = Math.round( (screenH - (tileH * rowCount)) * 0.5 );
                 this.boardLeft = Math.round( (screenW - (tileW * colCount)) * 0.5 );
                 grid.moveTo(this.boardLeft, this.boardTop);
+                
+                if (data.backdrop) {
+                    this.backdrops.iterate('renderable', true, 'RETURN_CHILD', function (member) {
+                        member.renderable = false;
+                    });
+                    this.backdrops.iterate('name', data.backdrop, 'RETURN_CHILD', function (member) {
+                        member.renderable = true;
+                    });
+                }
             }.bind(this);
             
             if (level) {
@@ -66,16 +75,31 @@ square.g.game = (function () {
         preload: function () {
             this.load.spritesheet(tiles.id, tiles.resource, tileW, tileH, tiles.frames);
             this.load.spritesheet('startBtn', 'assets/images/start-button.png', 128, 128, 3);
+            this.load.image('bgMatrix', 'assets/images/matrix-bg.jpg');
+            this.load.image('bgBlue', 'assets/images/blue-bg.jpg');
         },
 
         create: function () {
+            var backdrops = this.backdrops = this.add.group(),
+                backdrop = backdrops.create(0, 0, 'bgMatrix');
+
             this.state = 0; // 0 == stopped, 1 == running
+
+            backdrop.name = 'bgMatrix';
+            backdrop.alpha = 0.5;
+            backdrop.renderable = false;
+
+            backdrop = backdrops.create(0, 0, 'bgBlue');
+            backdrop.name = 'bgBlue';
+            backdrop.alpha = 0.5;
+            backdrop.renderable = false;
+            
             game.add.button(game.world.centerX - 600, game.world.centerY + 250, 'startBtn', function () {
                 // button callback
                 this.state = this.state === 0 ? 1 : 0;
             }, this, 1, 0, 2);
 
-            this.initGrid();
+            this.initGrid('02');
         },
 
         update: function () {

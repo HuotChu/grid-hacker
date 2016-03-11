@@ -12,5 +12,6 @@
     ["DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT", "DEFAULT"]
   ],
   "columns": 10,
-  "rows": 10
+  "rows": 10,
+  "backdrop": "bgBlue"
 }

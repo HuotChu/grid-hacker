@@ -22,40 +22,15 @@ BODY {
 
 .header {
     position: absolute;
-    top: 0;
-    width: 100%;
+    top: 2%;
+    left: 2%;
+    width: 20%;
 }
 
 .header p {
     font-family: 'Minecraftia', sans-serif;
-    font-size: 3vw;
-    text-align: center;
-    width: 800px;
-    margin: 32px auto;
-}
-
-.play-button, .stop-button {
-    font-family: 'Minecraftia', sans-serif;
+    color: #fff;
     font-size: 2vw;
-    position: absolute;
-    bottom: 2%;
-    left: 10%;
-    cursor: pointer;
-    color: #6193ef;
-}
-
-.play-button:hover, .stop-button:hover {
-    text-shadow: 1px 1px 1px #efefef;
-}
-
-.stop-button {
-    position: absolute;
-    bottom: 2%;
-    left: 20%;
-}
-
-
-#game {
-    margin: 0 auto;
-    width: 1600px;
+    text-align: center;
+    width: 100%;
 }

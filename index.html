@@ -18,47 +18,22 @@
 </head>
 <body>
 
-<!--<section class="header">
+<section class="header">
     <p>Grid &nbsp; Hacker</p>
-</section>-->
+</section>
 
 <div id="gridGame"></div>
 
-<!--<p class="play-button">Play</p>-->
-<!--<p class="stop-button">Stop</p>-->
 
 <script src="lib/square.js"></script>
 <script src="lib/verge.min.js"></script>
 <script src="lib/phaser.min.js"></script>
 
 <script src="game/constants.js"></script>
-<script src="game/main.js"></script>
 <script src="game/grid.js"></script>
 <script src="game/tile.js"></script>
-
-<!--<script type="text/javascript">
-    (function() {
-        var game = square.game = new Phaser.Game(1600, 800, Phaser.CANVAS, 'game');
-
-        //game.state.add('Boot', gridHacker.Boot);
-        game.state.add('Preloader', gridHacker.Preloader);
-        game.state.add('Grid', gridHacker.Grid);
-//        game.state.add('Main', gridHacker.Main);
-        game.state.add('Game', gridHacker.Game);
-        game.state.start('Preloader');
-        
-        var playBtn = document.querySelector('.play-button'),
-            stopBtn = document.querySelector('.stop-button');
-        
-        playBtn.addEventListener('click', function () {
-            gridHacker.Game.prototype.model.state = 1;
-        }, false);
-
-        stopBtn.addEventListener('click', function () {
-            gridHacker.Game.prototype.model.state = 0;
-        }, false);
-    }());
-</script>-->
+<script src="game/inventory.js"></script>
+<script src="game/main.js"></script>
 
 </body>
 </html>
