@@ -12,10 +12,10 @@ square.CONSTANTS.tileStates = {
 };
 
 square.CONSTANTS.tileProperties = {
-    DEFAULT: {
+    DEFAULT: {      // DEFAULT is almost DEAD, but not quite, because it can change state
         LIVE: [],   // number of same-team neighbors required to live
                     // DEFAULT state does not require neighbors to live
-        SPAWN: [],  // number of same-team neighbors required to change the state
+        SPAWN: 9,  // number of same-team neighbors required to change the state
         POWER: 0,   // attack power
         TOUGH: 0,   // hit points
         INFECT: 0,  // ability to change neighbor tile states
@@ -24,9 +24,9 @@ square.CONSTANTS.tileProperties = {
         AGE: 0      // how many generations this tile has kept the same state
                     // some tiles will upgrade their state at a certain age
     },
-    DEAD: {
+    DEAD: {         // DEAD is dead. It can never change state again.
         LIVE: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-        SPAWN: [],
+        SPAWN: 9,
         POWER: 0,
         TOUGH: 0,
         INFECT: 0,
@@ -36,7 +36,7 @@ square.CONSTANTS.tileProperties = {
     },
     WEAK: {
         LIVE: [2, 3],
-        SPAWN: [3],
+        SPAWN: 3,
         POWER: 1,
         TOUGH: 1,
         INFECT: 0,
@@ -46,7 +46,7 @@ square.CONSTANTS.tileProperties = {
     },
     MEDIUM: {
         LIVE: [2, 3, 4],
-        SPAWN: [4],
+        SPAWN: 4,
         POWER: 2,
         TOUGH: 2,
         INFECT: 0,
@@ -56,7 +56,7 @@ square.CONSTANTS.tileProperties = {
     },
     STRONG: {
         LIVE: [1, 2, 3, 4, 5],
-        SPAWN: [5],
+        SPAWN: 5,
         POWER: 3,
         TOUGH: 3,
         INFECT: 0,
@@ -66,7 +66,7 @@ square.CONSTANTS.tileProperties = {
     },
     PLAYER_WEAK: {
         LIVE: [2, 3],
-        SPAWN: [3],
+        SPAWN: 3,
         POWER: 1,
         TOUGH: 1,
         INFECT: 0,
@@ -76,7 +76,7 @@ square.CONSTANTS.tileProperties = {
     },
     PLAYER_MEDIUM: {
         LIVE: [2, 3, 4],
-        SPAWN: [4],
+        SPAWN: 4,
         POWER: 2,
         TOUGH: 2,
         INFECT: 1,
@@ -86,7 +86,7 @@ square.CONSTANTS.tileProperties = {
     },
     PLAYER_STRONG: {
         LIVE: [1, 2, 3, 4, 5],
-        SPAWN: [5],
+        SPAWN: 5,
         POWER: 3,
         TOUGH: 3,
         INFECT: 2,
@@ -96,7 +96,7 @@ square.CONSTANTS.tileProperties = {
     },
     AV_WEAK: {
         LIVE: [2, 3],
-        SPAWN: [3],
+        SPAWN: 3,
         POWER: 1,
         TOUGH: 1,
         INFECT: 0,
@@ -106,7 +106,7 @@ square.CONSTANTS.tileProperties = {
     },
     AV_MEDIUM: {
         LIVE: [2, 3, 4],
-        SPAWN: [4],
+        SPAWN: 4,
         POWER: 2,
         TOUGH: 2,
         INFECT: 1,
@@ -116,7 +116,7 @@ square.CONSTANTS.tileProperties = {
     },
     AV_STRONG: {
         LIVE: [1, 2, 3, 4, 5],
-        SPAWN: [5],
+        SPAWN: 5,
         POWER: 3,
         TOUGH: 3,
         INFECT: 2,

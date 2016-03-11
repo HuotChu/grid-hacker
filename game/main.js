@@ -26,14 +26,7 @@ square.g = {
             tileHeight: 32,
             frames: 140
         }
-    },
-    
-    preload: function () {
-        var tiles = this.sprites.tiles;
-
-        this.game.load.spritesheet(tiles.id, tiles.resource, tiles.tileWidth, tiles.tileHeight, tiles.frames);
     }
-    
 };
 
 square.g.game = (function () {
@@ -53,12 +46,13 @@ square.g.game = (function () {
             var build = function (xhr) {
                 var data = xhr ? JSON.parse(xhr.responseText) : {columns: columns, rows: rows, map: undefined},
                     colCount = data.columns,
-                    rowCount = data.rows;
-
-                this.grid = new square.Grid(colCount, rowCount, data.map);
+                    rowCount = data.rows,
+                    grid = this.grid = new square.Grid(colCount, rowCount, data.map);
+                
+                grid.mapNeighborhood();
                 this.boardTop = Math.round( (screenH - (tileH * rowCount)) * 0.5 );
                 this.boardLeft = Math.round( (screenW - (tileW * colCount)) * 0.5 );
-                this.grid.moveTo(this.boardLeft, this.boardTop);
+                grid.moveTo(this.boardLeft, this.boardTop);
             }.bind(this);
             
             if (level) {
@@ -71,15 +65,31 @@ square.g.game = (function () {
 
         preload: function () {
             this.load.spritesheet(tiles.id, tiles.resource, tileW, tileH, tiles.frames);
+            this.load.spritesheet('startBtn', 'assets/images/start-button.png', 128, 128, 3);
         },
 
         create: function () {
-            this.initGrid('01');
+            this.state = 0; // 0 == stopped, 1 == running
+            game.add.button(game.world.centerX + 200, game.world.centerY + 20, 'startBtn', function () {
+                // button callback
+                this.state = this.state === 0 ? 1 : 0;
+            }, this, 1, 0, 2);
+
+            this.initGrid();
         },
 
         update: function () {
-
-        }
+            ++this.timer;
+            if (this.timer > 3600) {
+                this.timer = 1;
+            }
+            // call function to evolve grid
+            if (this.state === 1 && this.timer % 15 === 0) {
+                this.grid.update();
+            }
+        },
+        
+        timer: 0
     };
     
     game.state.add(g.gameStates.game, g.gameState);

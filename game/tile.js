@@ -51,3 +51,116 @@ square.Tile = function (col, row, type, group) {
     
     return this;
 };
+
+square.Tile.prototype = {
+    pendingUpdate: false,
+    
+    update: function () {
+        var pending = this.pendingUpdate;
+        
+        if (pending) {
+            this.tileState = pending.tileState;
+            this.sprite.animations.frame = pending.frame;
+            this.tileProperties = pending.tileProperties;
+            this.pendingUpdate = false;
+        } else {
+            this.tileProperties.AGE += 1;
+        }
+    },
+    
+    prepareUpdate: function () {
+        var tileState = this.tileState,
+            populationState = this.populationTest(),
+            CONSTANTS = square.CONSTANTS;
+        
+        if (tileState !== populationState && !this.pendingUpdate) {
+            // queue the update
+            this.pendingUpdate = {
+                tileState: populationState,
+                frame: CONSTANTS.tileStates[populationState],
+                tileProperties: CONSTANTS.tileProperties[populationState]
+            };
+        }
+    },
+    
+    populationTest: function () {
+        var i = 0,
+            neighbors = this.neighbors,
+            spawnCheck = [],
+            willSpawn = [],
+            spawners = 0,
+            returnState = this.tileState,
+            CONSTANTS = square.CONSTANTS,
+            highRank = 0,
+            tileProps = this.tileProperties,
+            currentTeam = tileProps.TEAM,
+            neighbor, spawn, team, teamCount;
+
+        if (currentTeam > 0) {
+            // will this state survive?
+            teamCount = this.getTeamCount(currentTeam);
+            if (tileProps.LIVE.indexOf(teamCount) === -1) {
+                // cell state dies, return to default
+                returnState = 'DEFAULT';
+            }
+        } else {
+            for (i; i < 8; ++i) {
+                neighbor = neighbors[i];
+                // can only spawn if this is a default tile
+                if (returnState === 'DEFAULT') {
+                    spawn = neighbor.tileProperties.SPAWN;
+                    team = neighbor.tileProperties.TEAM;
+                    if (spawnCheck.indexOf(team) === -1) {
+                        teamCount = this.getTeamCount(team);
+                        if (teamCount === spawn) {
+                            willSpawn.push(neighbor.tileState);
+                        }
+                        spawnCheck.push(team);
+                    }
+                }
+            }
+
+            if (willSpawn.length) {
+                spawners = willSpawn.length;
+                if (spawners === 1) {
+                    returnState = willSpawn[0];
+                } else {
+                    // multiple spawners competing
+                    spawners = [];
+                    willSpawn.forEach(function (type) {
+                        var rank = CONSTANTS.tileProperties[type];
+
+                        if (spawners.indexOf(type) === -1) {
+                            if (rank = highRank) {
+                                spawners.push(type);
+                            } else if (rank > highRank) {
+                                highRank = rank;
+                                spawners = [type];
+                            }
+                        }
+                    });
+                    // if left with only one type of spawner, change state to spawner's state
+                    if (spawners.length === 1) {
+                        returnState = spawners[0];
+                    }
+                    // Otherwise, there are one or more ties, so no spawning occurs
+                }
+            }
+        }
+        
+        return returnState;
+    },
+    
+    getTeamCount: function (team) {
+        var neighbors = this.neighbors,
+            count = 0, i = 0;
+
+        for (i; i < 8; ++i) {
+            if (neighbors[i].tileProperties.TEAM === team) {
+                ++count;
+            }
+        }
+        
+        return count;
+    }
+};
