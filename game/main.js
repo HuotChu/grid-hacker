@@ -2,8 +2,8 @@ square.g = {
     config: {
         screenWidth: verge.viewportW(),
         screenHeight: verge.viewportH(),
-        columns: 10,
-        rows: 10
+        columns: 25,
+        rows: 25
     },
 
     gameStates: {
@@ -70,7 +70,7 @@ square.g.game = (function () {
 
         create: function () {
             this.state = 0; // 0 == stopped, 1 == running
-            game.add.button(game.world.centerX + 200, game.world.centerY + 20, 'startBtn', function () {
+            game.add.button(game.world.centerX - 600, game.world.centerY + 250, 'startBtn', function () {
                 // button callback
                 this.state = this.state === 0 ? 1 : 0;
             }, this, 1, 0, 2);

@@ -76,7 +76,7 @@ square.CONSTANTS.tileProperties = {
     },
     PLAYER_MEDIUM: {
         LIVE: [2, 3, 4],
-        SPAWN: 4,
+        SPAWN: 3,
         POWER: 2,
         TOUGH: 2,
         INFECT: 1,
@@ -85,8 +85,8 @@ square.CONSTANTS.tileProperties = {
         AGE: 60
     },
     PLAYER_STRONG: {
-        LIVE: [1, 2, 3, 4, 5],
-        SPAWN: 5,
+        LIVE: [2, 3, 4, 5],
+        SPAWN: 3,
         POWER: 3,
         TOUGH: 3,
         INFECT: 2,

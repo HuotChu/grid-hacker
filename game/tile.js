@@ -30,6 +30,7 @@ square.Tile = function (col, row, type, group) {
                 tileState = this.tileState;
             
             switch (tileState.toLowerCase()) {
+                //case 'player_medium':
                 case 'player_weak':
                     this.tileState = dfault;
                     this.sprite.animations.frame = CONSTANTS.tileStates[dfault];
@@ -71,6 +72,7 @@ square.Tile.prototype = {
     prepareUpdate: function () {
         var tileState = this.tileState,
             populationState = this.populationTest(),
+            battleState = this.battleTest(),
             CONSTANTS = square.CONSTANTS;
         
         if (tileState !== populationState && !this.pendingUpdate) {
@@ -79,6 +81,14 @@ square.Tile.prototype = {
                 tileState: populationState,
                 frame: CONSTANTS.tileStates[populationState],
                 tileProperties: CONSTANTS.tileProperties[populationState]
+            };
+        }
+        
+        if (populationState !== 'DEFAULT' && battleState !== tileState) {
+            this.pendingUpdate = {
+                tileState: battleState,
+                frame: CONSTANTS.tileStates[battleState],
+                tileProperties: CONSTANTS.tileProperties[battleState]
             };
         }
     },
@@ -144,6 +154,63 @@ square.Tile.prototype = {
                         returnState = spawners[0];
                     }
                     // Otherwise, there are one or more ties, so no spawning occurs
+                }
+            }
+        }
+        
+        return returnState;
+    },
+    
+    battleTest: function () {
+        var neighbors = this.neighbors,
+            props = this.tileProperties,
+            returnState = this.tileState,
+            CONSTANTS = square.CONSTANTS,
+            infections = [],
+            neighbor, nProps, nState, lossLen, victor,
+            i = 0;
+
+        if (returnState !== 'DEFAULT') {
+            for (i; i < 8; ++i) {
+                neighbor = neighbors[i];
+                nProps = neighbor.tileProperties;
+                nState = neighbor.tileState;
+                if (nProps.TEAM !== props.TEAM && nProps.TEAM !== 0 && infections.indexOf(nState) === -1) {
+                    // opponent located... time for battle
+                    // test for infection
+                    if (nProps.INFECT >= props.TOUGH) {
+                        // infection requires greater INFECT than TOUGH
+                        // or if equal, this neighbor must outrank the current tile
+                        if (nProps.INFECT > props.TOUGH || nProps.RANK > props.RANK) {
+                            // assimilated you are
+                            infections.push(nState);
+                        }
+                    } else if (nProps.POWER >= props.TOUGH && infections.length === 0) {
+                        // killed in battle :(
+                        infections.push('DEFAULT');
+                    }
+                }
+            }
+
+            // flip through the book of losses and see which state wins
+            lossLen = infections.length;
+
+            if (lossLen) {
+                returnState = infections[0];
+
+                if (lossLen > 1) {
+                    // infections take precedence over kills, but who wins the tile?
+                    for (i = 1; i < lossLen; ++i) {
+                        victor = infections[i];
+                        nProps = CONSTANTS.tileProperties[victor];
+                        props = CONSTANTS.tileProperties[returnState];
+
+                        if (nProps.INFECT >= props.INFECT) {
+                            if (nProps.INFECT > props.INFECT || nProps.RANK > props.RANK) {
+                                returnState = victor;
+                            }
+                        }
+                    }
                 }
             }
         }
