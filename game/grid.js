@@ -4,6 +4,9 @@ square.Grid = function (cols, rows, map) {
         i = 0,
         j = 0,
         row, tile;
+    
+    this.grid = grid;
+    this.group = group;
 
     for (i; i < rows; ++i) {
         row = [];
@@ -15,11 +18,13 @@ square.Grid = function (cols, rows, map) {
 
         grid.push(row);
     }
-
-    grid.__proto__.moveTo = function (x, y) {
-        group.x = x;
-        group.y = y;
-    };
     
-    return grid;
+    return this;
+};
+
+square.Grid.prototype = {
+    moveTo: function (x, y) {
+        this.group.x = x;
+        this.group.y = y;
+    }
 };

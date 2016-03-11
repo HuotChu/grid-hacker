@@ -1,5 +1,3 @@
-square.CONSTANTS = {};
-
 square.g = {
     config: {
         screenWidth: verge.viewportW(),
