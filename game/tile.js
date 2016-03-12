@@ -5,9 +5,11 @@ square.Tile = function (col, row, type, group) {
         currentFrame = CONSTANTS.tileStates[type],
         x = col * tiles.tileWidth,
         y = row * tiles.tileHeight,
+        scaleBy = tiles.scaleBy,
         sprite = this.sprite = g.game.add.sprite(x, y, tiles.id, currentFrame, group);
 
     this.tileState = type;
+    sprite.scale.setTo(scaleBy, scaleBy);
     
     if (type == 'DEFAULT') {
         sprite.inputEnabled = true;

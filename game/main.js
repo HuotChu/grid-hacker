@@ -1,7 +1,7 @@
 square.g = {
     config: {
-        screenWidth: verge.viewportW(),
-        screenHeight: verge.viewportH(),
+        screenWidth: square.verge.viewportW(),
+        screenHeight: square.verge.viewportH(),
         columns: 25,
         rows: 25
     },
@@ -36,10 +36,15 @@ square.g.game = (function () {
         columns = config.columns,
         screenH = config.screenHeight,
         screenW = config.screenWidth,
+        scaleFactorX = Math.floor(screenW / 1920 * 100) / 100,
+        scaleFactorY = Math.floor(screenH / 1080 * 100) / 100,
+        scaleBy = scaleFactorX > scaleFactorY ? scaleFactorX : scaleFactorY,
         tiles = g.sprites.tiles,
-        tileH = tiles.tileHeight,
-        tileW = tiles.tileWidth,
+        tileH = tiles.tileHeight = Math.floor(scaleBy * tiles.tileHeight),
+        tileW = tiles.tileWidth = Math.floor(scaleBy * tiles.tileWidth),
         game = new Phaser.Game(screenW, screenH, Phaser.CANVAS, 'gridGame');
+    
+    tiles.scaleBy = scaleBy;
 
     g.gameState.prototype = {
         initGrid: function (level) {
@@ -73,7 +78,7 @@ square.g.game = (function () {
         },
 
         preload: function () {
-            this.load.spritesheet(tiles.id, tiles.resource, tileW, tileH, tiles.frames);
+            this.load.spritesheet(tiles.id, tiles.resource, 32, 32, tiles.frames);
             this.load.spritesheet('startBtn', 'assets/images/start-button.png', 128, 128, 3);
             this.load.image('bgMatrix', 'assets/images/matrix-bg.jpg');
             this.load.image('bgBlue', 'assets/images/blue-bg.jpg');
@@ -94,7 +99,7 @@ square.g.game = (function () {
             backdrop.alpha = 0.5;
             backdrop.renderable = false;
             
-            game.add.button(game.world.centerX - 600, game.world.centerY + 250, 'startBtn', function () {
+            game.add.button(50, 50, 'startBtn', function () {
                 // button callback
                 this.state = this.state === 0 ? 1 : 0;
             }, this, 1, 0, 2);
